@@ -1,12 +1,30 @@
 import styled from "styled-components";
 
+import { useDispatch } from "react-redux";
+import { setUserLoginDetails } from "../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
+
 const Login = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    dispatch(
+      setUserLoginDetails({
+        name: "Guest",
+        email: "guest@example.com",
+        photo: "/images/viewers-disney.png",
+      })
+    );
+    navigate("/home");
+  };
+
   return (
     <Container>
       <Content>
         <CTA>
           <CTALogoOne src="/images/cta-logo-one.svg" alt="" />
-          <SignUp>GET ALL THERE</SignUp>
+          <SignUp onClick={handleLogin}>GET ALL THERE</SignUp>
           <Description>
             Get Premier Access to Raya and the Last Dragon for an additional fee
             with a Disney+ subscription. As of 03/26/21, the price of Disney+
@@ -95,7 +113,10 @@ const SignUp = styled.a`
   &:hover {
     background-color: #0483ee;
   }
+
+  cursor: pointer;
 `;
+
 
 const Description = styled.p`
   color: hsla(0, 0%, 95.3%, 1);

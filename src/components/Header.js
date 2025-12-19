@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "../firebase";
+// import { auth, provider } from "../firebase";
 import {
   selectUserName,
   selectUserPhoto,
@@ -16,34 +16,44 @@ const Header = (props) => {
   const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
 
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUser(user);
-        navigate("/home");
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName]);
+  // useEffect(() => {
+  //   auth.onAuthStateChanged(async (user) => {
+  //     if (user) {
+  //       setUser(user);
+  //       navigate("/home");
+  //     }
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [userName]);
 
   const handleAuth = () => {
     if (!userName) {
-      auth
-        .signInWithPopup(provider)
-        .then((result) => {
-          setUser(result.user);
+      dispatch(
+        setUserLoginDetails({
+          name: "Guest",
+          email: "guest@example.com",
+          photo: "/images/viewers-disney.png",
         })
-        .catch((error) => {
-          alert(error.message);
-        });
+      );
+      navigate("/home");
+      // auth
+      //   .signInWithPopup(provider)
+      //   .then((result) => {
+      //     setUser(result.user);
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
     } else if (userName) {
-      auth
-        .signOut()
-        .then(() => {
-          dispatch(setSignOutState());
-          navigate("/");
-        })
-        .catch((err) => alert(err.message));
+      dispatch(setSignOutState());
+      navigate("/");
+      // auth
+      //   .signOut()
+      //   .then(() => {
+      //     dispatch(setSignOutState());
+      //     navigate("/");
+      //   })
+      //   .catch((err) => alert(err.message));
     }
   };
 
